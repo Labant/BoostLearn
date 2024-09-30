@@ -2,35 +2,37 @@
 
 ## 安装Boost库 [Linux]
 
-1. 下载
+---
 
-   - 地址：https://archives.boost.io/release/
+### 下载
 
-2. 解压
+- 地址：https://archives.boost.io/release/
 
-   ```sh
-   tar -xzvf boost_1_82_0.tar.gz
-   cd boost_1_82_0
-   ```
+### 解压
 
-3. 编译
+```sh
+tar -xzvf boost_1_82_0.tar.gz
+cd boost_1_82_0
+```
 
-   ```shell
-   ./bootstrap.sh --prefix=/usr/local
-   ./b2
-   ```
+ ### 编译
 
-   
+```shell
+./bootstrap.sh --prefix=/usr/local
+./b2
+```
 
-4. 安装
 
-   ```shell
-   sudo ./b2 install
-   ```
 
-   
+### 安装
 
-5. 使用
+```shell
+sudo ./b2 install
+```
+
+
+
+### 编译
 
 ```shell
 g++ -o boost_tcp_client ./boost_tcpserver.c -lpthread -lboost_system
@@ -38,13 +40,39 @@ g++ -o boost_tcp_client ./boost_tcpserver.c -lpthread -lboost_system
 g++ -o boost_tcp_client ./boost_tcpserver.c -lpthread -lboost_system
 ```
 
-## Boost网络
 
-### Asio_tcp
+
+## Boost库 使用[Linux]
+
+---
+
+> 官网：`https://www.boost.org/doc/libs/1_86_0/` 
+
+### Boost算法
+
+### Boost字符处理
+
+### Boost时间日期
+
+### Boost文件处理
+
+### Boost环形缓冲区
+
+### Boost容器篇
+
+### Boost智能指针
+
+### Boost线程
+
+### Boost Lambda
+
+### Boost ASIO
+
+#### Asio_tcp
 
 > 线程使用std::thread
 
-#### boost_tcpclient.c
+##### boost_tcpclient.c
 
 ```cpp
 #include <iostream>
@@ -82,7 +110,7 @@ int main() {
 
 ```
 
-#### boost_tcpserver.c
+##### boost_tcpserver.c
 
 ```cpp
 #include <iostream>
@@ -133,7 +161,9 @@ int main() {
 
 ```
 
-#### 编译
+##### 编译
+
+1. 命令行编译
 
 ```shell
 g++ -o boost_tcp_client ./boost_tcpserver.c \
@@ -147,5 +177,28 @@ g++ -o boost_tcp_client ./boost_tcpserver.c \
 -L/home/lvs/lvs/07_ThirdCompontents/03_boost/01_release_build/lib \
 -lpthread \
 -lboost_system
+```
+
+2. make编译
+
+```makefile
+BOOSTDIR := /home/lvs/lvs/07_ThirdCompontents/03_boost/01_release_build/
+CURREENT_PATH := $(shell pwd)
+CXX = g++
+CXXFLAGS = -std=c++17
+
+.PHONY: all
+
+boost_tcp_server:
+	$(CXX) -o boost_tcp_server $(CURREENT_PATH)/boost_tcpserver.c -I$(BOOSTDIR)include -L$(BOOSTDIR)lib -L/usr/lib/ -lpthread -lboost_system 
+
+boost_tcp_client:
+	$(CXX) -o boost_tcp_client $(CURREENT_PATH)/boost_tcpclient.c -I$(BOOSTDIR)include -L$(BOOSTDIR)lib -L/usr/lib/ -lpthread -lboost_system 
+
+clean:
+	rm -f boost_tcp_server boost_tcp_client
+	echo "clean ok"
+
+all:boost_tcp_server boost_tcp_client
 ```
 
