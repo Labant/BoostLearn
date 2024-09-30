@@ -5,3 +5,4 @@ Hello,the is lib of boost  practiced
 1. **宿主机：** win11
 2. **虚拟机：** ubuntu20.04
 3. **Boost版本：** 1_86
+4. **g++:** 9.4.0
