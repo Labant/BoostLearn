@@ -52,11 +52,161 @@ g++ -o boost_tcp_client ./boost_tcpserver.c -lpthread -lboost_system
 
 ### Boost字符处理
 
+##### boost_character.c
+
+```cpp
+#include <iostream>
+#include <string>
+#include "boost/algorithm/string.hpp"
+#include "boost/algorithm/hex.hpp"
+
+int main()
+{
+    // low 2 up
+    std::string str = "lvs string 1";
+    boost::to_upper(str);
+    std::cout <<"to_upper:"<< str<<std::endl;
+
+    // Up 2 Low
+    std::string str2 = "LVS STRING 2";
+    boost::to_lower(str2);
+    std::cout <<"to_lower:"<< str2<<std::endl;
+
+    // find characters in string
+    std::string str3 = "LVS STRING ,here";
+    if(boost::find_first(str3,"here")){
+        std::cout <<"here found"<<std::endl;
+    }
+
+    // replace characters in string
+    std::string str4 = "LVS STRING ,here replace";
+    boost::replace_all(str4,"replace","lv lv lv ");
+    std::cout<<"Replaced string:"<<str4<<std::endl;
+
+    // character 2 hex
+    std::string input = "hello,boost";
+    std::string hex_output,unhex_output;
+
+    boost::algorithm::hex(input.begin(),input.end(),std::back_inserter(hex_output));
+    std::cout << "hex_output:"<< hex_output << std::endl;
+
+    // hex 2 character string
+    boost::algorithm::unhex(hex_output.begin(),hex_output.end(),std::back_inserter(unhex_output));
+    std::cout << "unhex_output:"<< unhex_output << std::endl;
+
+    return 0;
+}
+
+
+```
+
+
+
+##### 编译
+
+```makefile
+BOOSTDIR := /home/lvs/lvs/07_ThirdCompontents/03_boost/01_release_build/
+SYSDIR := /usr/lib/
+CURREENT_PATH := $(shell pwd)
+CXX = g++
+CXXFLAGS = -std=c++17
+
+Target = boost_character
+
+.PHONY: all
+
+$(Target):
+	$(CXX) -o $(Target) $(CURREENT_PATH)/$(Target).c -I$(BOOSTDIR)include -L$(BOOSTDIR)lib -L$(SYSDIR) -lboost_system 
+
+clean:
+	rm -f $(Target)
+	echo "clean ok"
+
+all:$(Target)
+```
+
+
+
+##### 运行
+
+```shell
+lvs@ubuntu:~/lvs/01_Code/01_TestCode01/BoostTest/BoostCharacter$ ./boost_character 
+to_upper:LVS STRING 1
+to_lower:lvs string 2
+here found
+Replaced string:LVS STRING ,here lv lv lv 
+hex_output:68656C6C6F2C626F6F7374
+unhex_output:hello,boost
+```
+
+
+
 ### Boost时间日期
 
 ### Boost文件处理
 
 ### Boost环形缓冲区
+
+#### boost_circular_buffer.c
+
+```cpp
+#include <iostream>
+#include <string>
+#include "boost/circular_buffer.hpp"
+
+int main(int argc,char** argv)
+{
+    boost::circular_buffer<std::string> circluar_buffer(5);
+    for(int i = 0 ;i < 10;i++){
+        circluar_buffer.push_back(std::to_string(i));
+    }
+
+    int _size = circluar_buffer.size();
+    for(int i = 0 ;i < _size;i++){
+        std::cout <<circluar_buffer[i]<<std::endl;
+    }
+
+    return 0;
+}
+```
+
+##### 编译
+
+```makefile
+BOOSTDIR := /home/lvs/lvs/07_ThirdCompontents/03_boost/01_release_build/
+SYSDIR := /usr/lib/
+CURREENT_PATH := $(shell pwd)
+CXX = g++
+CXXFLAGS = -std=c++17
+
+Target = boost_circular_buffer
+
+.PHONY: all
+
+$(Target):
+	$(CXX) -o $(Target) $(CURREENT_PATH)/$(Target).c -I$(BOOSTDIR)include -L$(BOOSTDIR)lib -L$(SYSDIR) -lboost_system 
+
+clean:
+	rm -f $(Target)
+	echo "clean ok"
+
+all:$(Target)
+```
+
+
+
+##### 运行
+
+```shell
+lvs@ubuntu:~/lvs/01_Code/01_TestCode01/BoostTest/BoostCircularBuffer$ ./boost_circular_buffer 
+5
+6
+7
+8
+9
+```
+
+
 
 ### Boost容器篇
 
